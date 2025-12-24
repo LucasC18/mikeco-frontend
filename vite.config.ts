@@ -4,12 +4,13 @@ import path from "path"
 
 export default defineConfig({
   plugins: [react()],
+  base: "/mikeco-frontend/",
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src")
-    }
+      "@": path.resolve(__dirname, "./src"),
+    },
   },
   server: {
-    port: 5173
-  }
+    port: 5173,
+  },
 })
