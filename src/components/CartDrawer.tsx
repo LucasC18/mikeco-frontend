@@ -63,12 +63,17 @@ const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
         throw new Error("No se pudo generar el mensaje de WhatsApp");
       }
 
-      window.open(
-        `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-          response.whatsappMessage
-        )}`,
-        "_blank"
-      );
+      const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+        response.whatsappMessage
+      )}`;
+
+      const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+      if (isMobile) {
+        window.location.href = whatsappUrl;
+      } else {
+        window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+      }
 
       clearCart();
       onClose();
@@ -76,7 +81,8 @@ const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
       toast({
         description: "Consulta enviada exitosamente",
         duration: 2000,
-        className: "bg-black/95 backdrop-blur-xl border border-emerald-400/50 text-white shadow-[0_0_25px_rgba(16,185,129,0.5)]",
+        className:
+          "bg-black/95 backdrop-blur-xl border border-emerald-400/50 text-white shadow-[0_0_25px_rgba(16,185,129,0.5)]",
       });
     } catch (err: unknown) {
       console.error("Error al enviar consulta:", err);
@@ -87,7 +93,8 @@ const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
             ? err.message
             : "No se pudo enviar la consulta. Intentá nuevamente.",
         variant: "destructive",
-        className: "bg-black/95 backdrop-blur-xl border border-red-500/50 text-white shadow-[0_0_25px_rgba(239,68,68,0.5)]",
+        className:
+          "bg-black/95 backdrop-blur-xl border border-red-500/50 text-white shadow-[0_0_25px_rgba(239,68,68,0.5)]",
       });
     } finally {
       setIsLoading(false);
@@ -102,7 +109,8 @@ const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
     toast({
       description: `Producto eliminado: ${name}`,
       duration: 2000,
-      className: "bg-black/95 backdrop-blur-xl border border-white/20 text-white shadow-[0_0_25px_rgba(255,255,255,0.2)]",
+      className:
+        "bg-black/95 backdrop-blur-xl border border-white/20 text-white shadow-[0_0_25px_rgba(255,255,255,0.2)]",
     });
   };
 
@@ -112,7 +120,8 @@ const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
     toast({
       description: "Consulta vaciada",
       duration: 2000,
-      className: "bg-black/95 backdrop-blur-xl border border-white/20 text-white shadow-[0_0_25px_rgba(255,255,255,0.2)]",
+      className:
+        "bg-black/95 backdrop-blur-xl border border-white/20 text-white shadow-[0_0_25px_rgba(255,255,255,0.2)]",
     });
   };
 

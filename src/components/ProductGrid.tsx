@@ -45,14 +45,17 @@ const ProductGrid = ({ products, onClearFilters }: ProductGridProps) => {
   }
 
   /* ===============================
-     GRID
+     GRID MEJORADO
   =============================== */
   return (
     <>
       <div
         className="
           grid
-          [grid-template-columns:repeat(auto-fill,minmax(280px,1fr))]
+          grid-cols-1
+          sm:grid-cols-2
+          lg:grid-cols-3
+          xl:grid-cols-4
           gap-6
           w-full
           px-4
@@ -64,7 +67,7 @@ const ProductGrid = ({ products, onClearFilters }: ProductGridProps) => {
             <motion.div
               key={product.id}
               layout
-              className="w-full h-full"
+              className="w-full flex"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}

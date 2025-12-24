@@ -109,15 +109,24 @@ const EMPTY_FORM: ProductFormState = {
   stockQty: 0,
 };
 
+
 function mapAdminProducts(
   items: ProductApiDTO[],
   categories: Category[]
 ): AdminProduct[] {
   return items.map((p) => {
-    const category =
-      p.categoryName ??
-      categories.find((c) => c.id === p.categoryId)?.name ??
-      "Sin categoría";
+    // Primero intentar con categoryName de la API
+    let category = p.categoryName;
+    
+    // Si no existe, buscar por categoryId
+    if (!category && p.categoryId) {
+      category = categories.find((c) => c.id === p.categoryId)?.name;
+    }
+    
+    // Fallback
+    if (!category) {
+      category = "Sin categoría";
+    }
 
     return {
       id: p.id,
