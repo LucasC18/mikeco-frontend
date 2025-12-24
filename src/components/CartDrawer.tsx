@@ -67,13 +67,9 @@ const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
         response.whatsappMessage
       )}`;
 
-      const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-      if (isMobile) {
-        window.location.href = whatsappUrl;
-      } else {
-        window.open(whatsappUrl, "_blank", "noopener,noreferrer");
-      }
+      // FIX: Usar window.open en todos los casos
+      // WhatsApp abrirá automáticamente la app si está instalada
+      window.open(whatsappUrl, "_blank", "noopener,noreferrer");
 
       clearCart();
       onClose();
