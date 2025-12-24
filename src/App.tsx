@@ -1,8 +1,10 @@
+import { useEffect } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Routes, Route } from "react-router-dom";
 
 import Footer from "@/components/Footer";
 
@@ -15,24 +17,38 @@ import About from "./pages/About";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
+const App = () => {
+  const navigate = useNavigate();
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/catalogo" element={<Catalog />} />
-        <Route path="/nosotros" element={<About />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+  // 🔁 FIX GitHub Pages SPA redirect
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const redirect = params.get("redirect");
 
-      <Footer />
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+    if (redirect) {
+      navigate(redirect, { replace: true });
+    }
+  }, [navigate]);
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/catalogo" element={<Catalog />} />
+          <Route path="/nosotros" element={<About />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+
+        <Footer />
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
