@@ -143,7 +143,7 @@ const Admin = () => {
 
     async function loadData() {
       try {
-        const categoriesRes = await apiFetch<Category[]>("/categories");
+        const categoriesRes = await apiFetch<Category[]>("/api/v1/categories");
         setCategories(categoriesRes);
 
         const productsRes = await apiFetch<{ items: ProductApiDTO[] }>(
