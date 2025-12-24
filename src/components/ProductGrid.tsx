@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { PackageSearch } from "lucide-react";
+
 import { Product } from "@/types/product";
 import ProductCard from "./ProductCard";
 import ProductDetailModal from "./ProductDetailModal";
-import { PackageSearch } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface ProductGridProps {
@@ -14,18 +15,23 @@ interface ProductGridProps {
 const ProductGrid = ({ products, onClearFilters }: ProductGridProps) => {
   const [selected, setSelected] = useState<Product | null>(null);
 
+  /* ===============================
+     EMPTY STATE
+  =============================== */
   if (products.length === 0) {
     return (
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="flex flex-col items-center justify-center py-20 text-center"
+        className="flex flex-col items-center justify-center py-24 text-center"
       >
         <PackageSearch className="w-20 h-20 text-muted-foreground mb-6" />
+
         <h3 className="font-display text-xl font-semibold">
           No se encontraron productos
         </h3>
-        <p className="text-muted-foreground mb-4">
+
+        <p className="text-muted-foreground mb-6">
           Ajustá los filtros o la búsqueda.
         </p>
 
@@ -38,19 +44,16 @@ const ProductGrid = ({ products, onClearFilters }: ProductGridProps) => {
     );
   }
 
+  /* ===============================
+     GRID
+  =============================== */
   return (
     <>
-      {/* GRID MEJORADO */}
       <div
         className="
           grid
-          grid-cols-1
-          sm:grid-cols-2
-          lg:grid-cols-3
-          2xl:grid-cols-4
-          gap-4
-          sm:gap-5
-          lg:gap-6
+          [grid-template-columns:repeat(auto-fill,minmax(280px,1fr))]
+          gap-6
           w-full
           px-4
           sm:px-0
@@ -61,13 +64,14 @@ const ProductGrid = ({ products, onClearFilters }: ProductGridProps) => {
             <motion.div
               key={product.id}
               layout
-              initial={{ opacity: 0, scale: 0.9 }}
+              className="w-full h-full"
+              initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ 
-                duration: 0.2,
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{
+                duration: 0.25,
                 delay: index * 0.03,
-                ease: "easeOut"
+                ease: "easeOut",
               }}
             >
               <ProductCard
@@ -80,7 +84,9 @@ const ProductGrid = ({ products, onClearFilters }: ProductGridProps) => {
         </AnimatePresence>
       </div>
 
-      {/* MODAL */}
+      {/* ===============================
+          MODAL DETALLE
+      =============================== */}
       <ProductDetailModal
         product={selected}
         open={!!selected}
